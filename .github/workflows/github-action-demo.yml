@@ -10,5 +10,10 @@ jobs:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - name: Checkout
         uses: actions/checkout@v2
-      - run: scp -P ${{ secrets.SSH_PORT }} ./LICENSE.md ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
+      - run: |
+        mkdir -p ~/.ssh/
+        echo ${{ secrets.SSH_RSA_KEY }} > ~/.ssh/id_rsa
+        chmod 600 /.ssh/id_rsa
+        ssh-keyscan ${{ secrets.HOST }} > ~/.ssh/known_hosts
+        scp -P ${{ secrets.SSH_PORT }} ./LICENSE.md ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
       - run: echo "🍏 This job's status is ${{ job.status }}."
