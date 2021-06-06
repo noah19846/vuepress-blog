@@ -8,16 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "${{ secrets.SSH_RSA_KEY }}"
       - name: Checkout
-        env:
-          SSH_RSA_KEY: ${{ secrets.SSH_RSA_KEY }}
         uses: actions/checkout@v2
-      - run: echo "$SSH_RSA_KEY"
-      - run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_RSA_KEY" > ~/.ssh/id_rsa.pub
-          chmod 600 ~/.ssh/id_rsa.pub
-          ssh-keyscan ${{ secrets.HOST }} > ~/.ssh/known_hosts
-          scp -P ${{ secrets.SSH_PORT }} ./LICENSE.md ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: copy file via ssh
+        uses: appleboy/scp-action@v0.1.1
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_RSA_KEY }}
+          source: "LICENSE.md"
+          target: "~/"
