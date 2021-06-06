@@ -6,18 +6,18 @@ on:
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
+    env:
+      SSH_RSA_KEY_PUB: ${{ secrets.SSH_RSA_KEY_PUB }}
+      SSH_RSA_KEY: ${{ secrets.SSH_RSA_KEY }}
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - name: Checkout
-        env:
-          SSH_RSA_KEY_PUB: ${{ secrets.SSH_RSA_KEY_PUB }}
-          SSH_RSA_KEY: ${{ secrets.SSH_RSA_KEY }}
         uses: actions/checkout@v2
       - run: |
           mkdir -p ~/.ssh/
-          echo "test" > ~/.ssh/id_rsa.pub
+          echo ${SSH_RSA_KEY_PUB} > ~/.ssh/id_rsa.pub
           chmod 600 ~/.ssh/id_rsa.pub
-          echo "$SSH_RSA_KEY" > ~/.ssh/id_rsa
+          echo ${SSH_RSA_KEY} > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           echo "`stat ~/.ssh/id_rsa.pub`"
           echo "`stat ~/.ssh/id_rsa`"
