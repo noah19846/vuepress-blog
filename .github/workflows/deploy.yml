@@ -26,4 +26,5 @@ jobs:
           echo "`cat ~/.ssh/id_rsa`"
           ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.HOST }} > ~/.ssh/known_hosts
           scp -r -P ${{ secrets.SSH_PORT }} ./docs/.vuepress/dist/ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.TARGET_DIR }}
+          echo "files copied to ${{ secrets.TARGET_DIR }} successfully."
       - run: echo "🍊 This job's status is ${{ job.status }}."
