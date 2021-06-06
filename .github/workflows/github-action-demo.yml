@@ -7,23 +7,20 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     env:
-      SSH_RSA_KEY_PUB: ${{ secrets.SSH_RSA_KEY_PUB }}
-      SSH_RSA_KEY: ${{ secrets.SSH_RSA_KEY }}
+      SSH_KEY_PUB: ${{ secrets.SSH_KEY_PUB }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - name: Checkout
         uses: actions/checkout@v2
       - run: |
           mkdir -p ~/.ssh/
-          # echo ${SSH_RSA_KEY_PUB} > ~/.ssh/id_rsa.pub
-          # chmod 600 ~/.ssh/id_rsa.pub
-          # echo ${SSH_RSA_KEY} > ~/.ssh/id_rsa
-          # chmod 600 ~/.ssh/id_rsa
-          # echo "`stat ~/.ssh/id_rsa.pub`"
-          # echo "`stat ~/.ssh/id_rsa`"
-          ssh-keygen -t ed25519 -C '' -f 'id_ed25519' -N ''
-          echo "`cat  ~/.ssh/id_ed25519`"
-          echo "`cat  ~/.ssh/id_ed25519_pub`"
+          echo ${SSH_KEY_PUB} > ~/.ssh/id_ed25519.pub
+          chmod 600 ~/.ssh/id_ed25519.pub
+          echo ${SSH_KEY} > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          echo "`stat ~/.ssh/id_ed25519.pub`"
+          echo "`stat ~/.ssh/id_ed25519`"
           ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.HOST }} > ~/.ssh/known_hosts
           echo "`stat ~/.ssh/known_hosts`"
           scp -P ${{ secrets.SSH_PORT }} ./LICENSE.md ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
