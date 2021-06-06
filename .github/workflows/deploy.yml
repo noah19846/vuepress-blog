@@ -9,8 +9,10 @@ jobs:
     env:
       SSH_KEY: ${{ secrets.SSH_KEY }}
     steps:
-      - name: Build
+      - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Build
         uses: actions/setup-node@v2.1.5
         with:
           node-version: '12'
@@ -24,4 +26,4 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           echo "`cat ~/.ssh/id_rsa`"
           ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.HOST }} > ~/.ssh/known_hosts
-          scp -P ${{ secrets.SSH_PORT }} ./docs/.vuepress/dist ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{secrets.TARGET_DIR}}
+          scp -P ${{ secrets.SSH_PORT }} ./docs/.vuepress/dist ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.TARGET_DIR }}
