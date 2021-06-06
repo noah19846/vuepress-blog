@@ -13,3 +13,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - run: echo "🍏 This job's status is ${{ job.status }}."
+      
+      - name: Build
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: '12'
+      - run: npm i
+      - run: npm run build
