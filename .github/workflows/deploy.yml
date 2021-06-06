@@ -9,6 +9,7 @@ jobs:
     env:
       SSH_KEY: ${{ secrets.SSH_KEY }}
     steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       # 第一步：下载源码（CI/CD拉取代码到自己的本地）
       - name: Checkout
         uses: actions/checkout@v2
