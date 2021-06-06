@@ -4,7 +4,7 @@ on:
     branches:
       - master
 jobs:
-  Explore-GitHub-Actions:
+  Build-And-Deploy:
     runs-on: ubuntu-latest
     env:
       SSH_KEY: ${{ secrets.SSH_KEY }}
@@ -16,8 +16,8 @@ jobs:
         uses: actions/setup-node@v2.1.5
         with:
           node-version: '12'
-        - run: npm i
-        - run: npm run build
+      - run: npm i
+      - run: npm run build
 
       - name: Deploy
       - run: |
