@@ -12,9 +12,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+
       - name: Build
         uses: actions/setup-node@v2.1.5
       - run: npm i && npm run build
+
 
       - name: Deploy
       - run: |
