@@ -9,10 +9,8 @@ jobs:
     env:
       SSH_KEY: ${{ secrets.SSH_KEY }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Build
+        uses: actions/checkout@v2
         uses: actions/setup-node@v2.1.5
         with:
           node-version: '12'
