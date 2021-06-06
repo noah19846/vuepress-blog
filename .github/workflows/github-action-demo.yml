@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "${{ secrets.SSH_RSA_KEY }}"
       - name: Checkout
         env:
           SSH_RSA_KEY: ${{ secrets.SSH_RSA_KEY }}
