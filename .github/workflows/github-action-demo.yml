@@ -19,8 +19,9 @@ jobs:
           chmod 600 ~/.ssh/id_rsa.pub
           echo "$SSH_RSA_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          echo "`stat ~/.ssh/id_rsa.pub`"
+          echo "`stat ~/.ssh/id_rsa`"
           ssh-keyscan ${{ secrets.HOST }} > ~/.ssh/known_hosts
-          echo "`ll -a ~/.ssh`"
-          echo "`cat ~/.ssh/known_hosts`"
+          echo "`stat ~/.ssh/known_hosts`"
           scp -P ${{ secrets.SSH_PORT }} ./LICENSE.md ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
       - run: echo "🍏 This job's status is ${{ job.status }}."
