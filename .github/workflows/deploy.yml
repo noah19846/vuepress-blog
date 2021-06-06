@@ -12,12 +12,7 @@ jobs:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Build
-        uses: actions/setup-node@v2.1.5
-        with:
-          node-version: '12'
-      - run: npm i
-      - run: npm run build
+
       - name: Deploy
       - run: |
           mkdir -p ~/.ssh/
