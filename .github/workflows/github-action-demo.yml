@@ -11,6 +11,10 @@ jobs:
       SSH_KEY: ${{ secrets.SSH_KEY }}
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: |
+          ssh-keygen -t ed25519 -C '' -f "`pwd`/.ssh/id_ed25519" -N ''
+          echo "`cat ~/.ssh/id_ed25519.pub`"
+          echo "`cat ~/.ssh/id_ed25519`"
       - name: Checkout
         uses: actions/checkout@v2
       - run: |
@@ -19,9 +23,6 @@ jobs:
           # chmod 600 ~/.ssh/id_ed25519.pub
           # echo ${SSH_KEY} > ~/.ssh/id_ed25519
           # chmod 600 ~/.ssh/id_ed25519
-          ssh-keygen -t ed25519 -C '' -f "`pwd`/.ssh/id_ed25519" -N ''
-          echo "`cat ~/.ssh/id_ed25519.pub`"
-          echo "`cat ~/.ssh/id_ed25519`"
           ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.HOST }} > ~/.ssh/known_hosts
           scp -P ${{ secrets.SSH_PORT }} -i ~/.ssh/id_ed25519 ./LICENSE.md ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/
       - run: echo "🍏 This job's status is ${{ job.status }}."
