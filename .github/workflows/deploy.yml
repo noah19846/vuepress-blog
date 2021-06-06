@@ -10,17 +10,14 @@ jobs:
       SSH_KEY: ${{ secrets.SSH_KEY }}
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      # 第一步：下载源码（CI/CD拉取代码到自己的本地）
       - name: Checkout
         uses: actions/checkout@v2
-
-      # 第二步：打包构建
       - name: Build
-        uses: actions/setup-node@v2
-      - run: npm install
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: '12'
+      - run: npm i
       - run: npm run build
-      
-      # 第三步：部署
       - name: Deploy
       - run: |
           mkdir -p ~/.ssh/
@@ -29,3 +26,4 @@ jobs:
           echo "`cat ~/.ssh/id_rsa`"
           ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.HOST }} > ~/.ssh/known_hosts
           scp -P ${{ secrets.SSH_PORT }} ./docs/.vuepress/dist ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.TARGET_DIR }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
