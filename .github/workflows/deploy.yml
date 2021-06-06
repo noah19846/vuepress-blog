@@ -25,5 +25,5 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           echo "`cat ~/.ssh/id_rsa`"
           ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.HOST }} > ~/.ssh/known_hosts
-          scp -P ${{ secrets.SSH_PORT }} ./docs/.vuepress/dist ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.TARGET_DIR }}
+          scp -r -P ${{ secrets.SSH_PORT }} ./docs/.vuepress/dist ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.TARGET_DIR }}
       - run: echo "🍊 This job's status is ${{ job.status }}."
