@@ -25,7 +25,7 @@ permalink: /pages/22953a/
 2. 通过 actions/checkout 拉取代码和切换到项目根目录
 3. 通过 actions/setup-node 安装 node 和 npm
 4.  安装依赖，打包
-5. 将存在当前环境变量的私钥通过 `echo` 命令写到 github runner 的 ~/.ssh/id_rsa 文件中（其他目录或者其文件名也可以，只不过那样的话，scp 的时候就要显示指定完整路径名），并且将远程服务器的 host 添加到 ~/.ssh/known_hosts 文件中
+5. 将存在当前环境变量的私钥通过 `echo` 命令写到 github runner 的 ~/.ssh/id_rsa 文件中（其他目录或者其文件名也可以，只不过那样的话，scp 的时候就要显示指定完整路径名），并且将远程服务器的 host 添加到 ~/.ssh/known_hosts 文件中（此举好像为了是避免在第一次 ssh 陌生服务器时，系统会询问「是否确认要与远程服务器连接」而使得后续 action 中断）
 6. 通过 scp 命令将打包好的文件复制到远程服务器指定位置
 
 ## 完整 yml 文件
@@ -62,5 +62,4 @@ jobs:
           scp -r -P ${{ secrets.SSH_PORT }} ./docs/.vuepress/dist/* ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.TARGET_DIR }}
           echo "files copied to remote server successfully."
       - run: echo "🍊 This job's status is ${{ job.status }}."
-
 ```
