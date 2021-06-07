@@ -12,7 +12,7 @@ jobs:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - name: Checkout
         uses: actions/checkout@v2
-      
+
       - name: Build and Deploy
         uses: actions/setup-node@v2.1.5
         with:
@@ -23,8 +23,7 @@ jobs:
           mkdir -p ~/.ssh/
           echo "${SSH_KEY}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          echo "`cat ~/.ssh/id_rsa`"
           ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.HOST }} > ~/.ssh/known_hosts
           scp -r -P ${{ secrets.SSH_PORT }} ./docs/.vuepress/dist/* ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.TARGET_DIR }}
-          echo "files copied to ${{ secrets.TARGET_DIR }} successfully."
+          echo "files copied to remote server successfully."
       - run: echo "🍊 This job's status is ${{ job.status }}."
