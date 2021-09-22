@@ -45,7 +45,7 @@ module.exports = {
       {
         iconClass: 'icon-juejin',
         title: '掘金',
-        link: 'https://juejin.cn/user/4019470241131853'
+        link: 'https://juejin.cn/user/4019470241131853/posts'
       }
     ]
   },
