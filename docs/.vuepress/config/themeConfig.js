@@ -38,9 +38,14 @@ module.exports = {
         link: 'https://github.com/noah19846'
       },
       {
-        iconClass: 'icon-erji',
-        title: '听音乐',
-        link: 'https://music.163.com/'
+        iconClass: 'icon-jianshu',
+        title: '简书',
+        link: 'https://www.jianshu.com/u/1718782838b1'
+      },
+      {
+        iconClass: 'icon-juejin',
+        title: '掘金',
+        link: 'https://juejin.cn/user/4019470241131853'
       }
     ]
   },
