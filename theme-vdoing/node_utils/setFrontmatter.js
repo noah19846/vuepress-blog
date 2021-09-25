@@ -18,7 +18,7 @@ function setFrontmatter (sourceDir, themeConfig) {
 
   const isCategory = themeConfig.category
   const isTag = themeConfig.tag
-  const categoryText = themeConfig.categoryText || '随笔'
+  const categoryText = themeConfig.categoryText || '笔记'
 
   const files = readFileList(sourceDir); // 读取所有md文件数据
 
