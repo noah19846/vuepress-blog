@@ -10,6 +10,8 @@ tags:
 ---
 window 下的 api 主要分为 ECMAScript API、DOM API、HTML API（其实很多 API 都算是包含在 HTML API 里的，只不过被细分出来，比如 DOM API）、CSSOM 相关的 API，以及剩余的占绝大多数的 Web api（有被纳入规范的和未被纳入规范的，这些 API 都是为浏览器提供特定的功能，比如音视频相关、蓝牙相关等）。这些 Web API 由可能最先由某个组织（比如 W3C、WHATWG、WICG 等）提出，然后被浏览器厂商实现（不一定被纳入标准）。
 
+CSSOM View API 为 DOM 的 element 扩展了一些与 view 相关的（比如距离、长宽之类）的属性和方法。
+
 ```
 // appVersion: "5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.93 Safari/537.36"
 
