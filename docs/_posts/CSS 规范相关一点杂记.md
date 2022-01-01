@@ -6,8 +6,9 @@ sidebar: auto
 categories:
   - 笔记
 tags:
-  - 
+  -
 ---
+
 ## 规范本身相关
 
 - 制定规范的工作由一个叫 W3C 的组织承担
@@ -119,9 +120,17 @@ A：其实 block container 可以差不多理解成 inner display type 为 flow 
 
 - Box：与 Dom tree 中的 element 或 text 对应
 - Formatting conntext：box layout 时需要遵循的规则
-- Containing block：box layout 时计算位置参照的坐标系
+- Containing block：box layout 时计算位置参照的坐标系，block 的宽度也是计算某些百分比单位的 computed Value 的 base
 
 还有就是理解树形结构相关的东西：
 
 - 其中的枝干节点一般都承担两种角色，作为上一层节点的子，和作为下一层节点的父，就像 box 的 outer display type 和 inner display type，如果不能意识到这一点，在辨析 block container 和 block-level box 的概念时可能会云里雾里
 - 找到「无中生有」的东西，比如 initial containing block 和为根元素 layout 创建的那个初始 BFC
+
+## 杂
+
+- offsetParent, offsetTop, offsetLeft, offsetHeight, offsetWidth：这些属性描述的是一个元素作为内容与其父元素（如果 offsetParent 与父元素不是同一元素时，也可通过 offsetParent、offsetTop、offsetLeft 间接表示）之间的关系，offsetHeight 指的是元素的 border box 的 height
+- clientTop, clientLeft, clientHeight, clientWidth：这些属性描述的是一个元素自身的一些信息，clientHeight 是 padding box 的 height，clientTop 是 padding box 的 top edge 与 border box 的 top edge 之间的距离
+- scrollTop, scrollLeft, scrollHeight, scrollWidth：这些属性描述的是一个元素作为父元素与其子元素整体之间的关系，scrollHeight 可以看做是其包含子元素整体组成的 box 的 height，而 scrollTop 则是子元素整体组成的 box 的 top edge 与 padding box 的 top edge 之间的距离
+
+关于一个元素的的 offsetParent 是 body 时的一个问题：当满足这样条件时，该元素的 offsetTop 和 offsetLeft 实际值会加上 body 对应方向上的 margin 的值，也就是说计算这两个值时，offsetParent 虽然的取值虽然是 body，但是实际效果却更像是以 html 为 offsetParent 计算。https://stackoverflow.com/questions/69855298/when-offsetparent-is-body-element-offsetleft-return-false-value
