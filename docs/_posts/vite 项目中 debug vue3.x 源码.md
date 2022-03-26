@@ -4,7 +4,7 @@ date: 2022-03-26 10:22:06
 permalink: /pages/f02836/
 sidebar: auto
 categories:
-  - 笔记
+  - Vue
 tags:
   - Vue3.x
 ---
