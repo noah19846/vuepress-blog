@@ -30,16 +30,13 @@ tags:
 const PENDING_STATUS = 'pending'
 const FULFILLED_STATUS = 'fulfilled'
 const REJECTED_STATUS = 'rejected'
-const identity = (v) => v
-const thrower = (v) => {
+const identity = v => v
+const thrower = v => {
   throw v
 }
 const _nextTick = setTimeout
-const isThenable = (value) =>
-  Object.prototype.toString.call(value) === '[object Object]' &&
-  value.hasOwnProperty &&
-  value.hasOwnProperty('then') &&
-  Object.prototype.toString.call(value['then']) === '[object Function]'
+const isThenable = value =>
+  value && Object.prototype.toString.call(value['then']) === '[object Function]'
 
 function _resolve(value) {
   let realValue
@@ -89,7 +86,7 @@ function _resolve(value) {
     this.status = realStatus
 
     if (this.cbs.length) {
-      this.cbs.forEach((cb) => cb(realValue, realStatus))
+      this.cbs.forEach(cb => cb(realValue, realStatus))
       this.cbs = []
     }
   })
@@ -118,7 +115,7 @@ function _reject(value) {
     this.status = REJECTED_STATUS
 
     if (this.cbs.length) {
-      this.cbs.forEach((cb) => cb(realValue, REJECTED_STATUS))
+      this.cbs.forEach(cb => cb(realValue, REJECTED_STATUS))
       this.cbs = []
     } else {
       throw realValue
@@ -205,7 +202,7 @@ class PromisE {
       return value
     }
 
-    return new PromisE((resolve) => resolve(value))
+    return new PromisE(resolve => resolve(value))
   }
 
   static reject(error) {
