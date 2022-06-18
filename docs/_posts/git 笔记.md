@@ -8,6 +8,7 @@ categories:
 tags:
   - Git
 ---
+
 ## git 笔记
 
 一个目录中包含名为 _.git_ 的目录（同时这个目录里需要存在些特定的东西）时，即表示这个目录正被 git 管理，_.git_ 目录包含的所有东西即为对应的 repository。当我们在某个目录下执行 `git init` 后，命令造成的结果就是为这个目录生成一个空的 repository，之后所有的 commit 都会被记录在 _.git_ 目录中。一个刚刚初始化的 _.git_ 目录包含 _HEAD_、_description_、_config_ 三个文件和 _objects_、_refs_、_hooks_、_info_ 四个目录，这里主要需要了解的是 HEAD、objects 和 refs。其中 HEAD 文件是一个文本文件，里面存储的是当前所在的 branch，可以通过 `cat .git/HEAD` 直接写查看它的内容：_ref: refs/heads/master_，表示当前正处于 master branch，可以说 HEAD 就是指向当前 branch 的一个 reference。而 refs 目录则是保存 branch 和 tag 等相关信息的地方，其中 branch 的信息保存在 _refs/heads_ 目录下，一个 branch 就对应一个文本文件，文件的内容是一个 40 个字符的 hash 串（git 中生成 hash 的算法是 SHA-1），对应某个 commit，也即这个 branch 当前最新的一次 commit 的 id。比如上面 `refs/heads/master` 的即代表 master branch，如果新建一个 test branch，那么对应的在 `refs/heads` 目录下就会生成一个 test 文件。所以，所谓的 **Branch** 本质上就是一个指向某个 commit 的 reference（这个 reference 的形式是一个 hash）。同样，**Tag** 也是一个 reference，它的形式也是一个 hash，作为字符串存储在 _refs/tag/{tag-name}_ 文件中，但是这个 hash 或如同 branch 一样指向一个 _commit object_，或指向一个包含某个 commit object 的 _tag object_。所以这保存 branch 和 tag 相关信息的目录名为 refs。
@@ -65,8 +66,34 @@ c2073552557463a4c73cf9bf9087251ae371db61 便是此 annotated tag 指向的 commi
 
 以上内容为 https://git-scm.com/book/en/v2 书籍的翻阅笔记。
 
+## 其他的一些问题
+
+### core.autocrlf 到底是怎么回事
+
+为了统一换行符（windows 系统是 CRLF，linux 系统是 LF），即存储到 .git 目录下的文件都是用统一的换行符，git 有一个 _core.autocrlf_ 的配置，取值为：
+
+- true：推荐为 windows 系统默认配置，含义包括，
+  1. 当依据某个 snapshot 从 .git 目录下 checkout 出所有与之对应的文件时，不管那些文件在 .git 目录中的换行符是什么，都统一转换为 CRLF 保存在 working directory；
+  2. 反之，当把 working directory 的文件 commit 到 .git 目录时，不管 working directory 的文件是以采取何种换行符，都将之转换成 LF
+- false：什么转换也不做，即 .git 目录下的文件是什么换行符，checkout 到 working directory 时就是什么换行符，反过来也是一样
+- input：只做上面值为 _input_ 时两个转换中的第 1 个转换
+
+### git 常见撤销操作
+
+- working directory 内：`git restore <file>`
+- staged area -> working directory：`git restore --stage <file>`
+- repository -> staged area：`git reset --soft HEAD^`
+- repository 中多个 commit 合并成一个：`git rebase -i HEAD~{n}`，n 为以之为 base 的那个 commit 到 git history 中最近的那个 commit 的距离，比如历史有 a, b, c 三个 commit，其中以 c 这个 commit 为 base 那么 n 的值就取 2，然后可以把 a，b 两个 commit 合并成一个（操作是 pick a，squash b）；如果想要把 c 连同 a，b 一起都合并成一个，那么在 c 之前必须存在一个 d，因为 rebase 的前提必须是存在一个 base
+- remote history 回滚：`git revert [commitId]`
+
+## 其他疑问
+
+### stash reference 指向的 commit 为何会有多个 parent
+
+stash 不仅要 stash working directory 和 stage 里的改动（此时会创建一个 commit），甚至还要 stash untracked files 的改动（此时也会创建一个 commit），所以 stash 时会创建多个 commit，因此 stash reference 指向的 commit 里也就有了多个 parent。
+
+实际上一次 stash 最少会创建 2 个 commit，暂存 working directory 和 stage 里的一个 commit1，stash 本身对应的一个 commit3，如果 stage 了 untracked 的 file，那么还会创建一个 commit2，其中，commit 3 以 commit0、commit1、commit2 为 parent，commit1 和 commit2 以 commit0 为 parent（commit0 为 history 中最近的那个 commit）。
+
 TODO:
 
 - stash area、working directory、index(aka stage area)、local repository、remote repository 等概念的理解
-- 常见问题的解决，比如对于各个区域的变动的撤销，如何将本地多个 commit 合并等
-- autocrlf 到底是怎么回事
