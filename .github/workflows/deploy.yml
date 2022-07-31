@@ -16,9 +16,10 @@ jobs:
       - name: Build and Deploy
         uses: actions/setup-node@v2.1.5
         with:
-          node-version: '12'
-      - run: npm i
-      - run: npm run build
+          node-version: '16'
+      - run: npm install yarn -g
+      - run: yarn
+      - run: yarn build
       - run: |
           mkdir -p ~/.ssh/
           echo "${SSH_KEY}" > ~/.ssh/id_rsa
